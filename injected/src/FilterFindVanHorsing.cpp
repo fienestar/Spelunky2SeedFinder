@@ -1,7 +1,7 @@
 #include "FilterFindVanHorsing.h"
 #include "AStar/SimplifiedLevel.h"
 #include "SeedFinder.h"
-#include "state.hpp"
+#include "LegacyState.h"
 
 namespace SeedFinder
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "FilterUI.h"
 #include "SeedFinderUtil.h"
-#include "state.hpp"
+#include "LegacyState.h"
 #include <cstdint>
 #include <imgui.h>
 #include <nlohmann/json.hpp>

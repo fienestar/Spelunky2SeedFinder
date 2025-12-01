@@ -1,6 +1,6 @@
 #include "SeedFinderUtil.h"
 #include "SeedFinder.h"
-#include "state.hpp"
+#include "LegacyState.h"
 #include <iostream>
 #include <sstream>
 

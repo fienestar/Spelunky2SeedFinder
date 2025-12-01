@@ -11,7 +11,7 @@
 #include "logger.h"
 #include "memory.h"
 #include "render_api.hpp"
-#include "state.hpp"
+#include "LegacyState.h"
 #include "window_api.hpp"
 
 

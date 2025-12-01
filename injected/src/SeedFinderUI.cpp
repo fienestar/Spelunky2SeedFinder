@@ -92,12 +92,16 @@ namespace SeedFinder
         if (ImGui::IsMouseClicked(1) && ImGui::IsWindowFocused())
         {
             auto state = State::get();
-            auto player = get_players()[0];
+            auto player = state.ptr()->get_players()[0];
             if (player != nullptr)
             {
                 ImVec2 mpos = normalize(io.MousePos);
                 const auto [clickX, clickY] = state.click_position(mpos.x, mpos.y);
-                player->teleport_abs(clickX, clickY, 0, 0);
+                player->detach(false);
+                player->x = clickX;
+                player->y = clickY;
+                player->velocityx = 0;
+                player->velocityy = 0;
             }
         }
         ImGui::End();

@@ -1,6 +1,6 @@
 #include "FilterFindAnkhSkip.h"
 #include "SeedFinder.h"
-#include "state.hpp"
+#include "LegacyState.h"
 
 namespace SeedFinder
 {

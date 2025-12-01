@@ -667,7 +667,7 @@ namespace SeedFinder
     {
         if (g_state != nullptr)
         {
-            ::set_seed(seed);
+            g_state->set_seed(seed);
         }
     };
 
@@ -675,7 +675,7 @@ namespace SeedFinder
     {
         if (g_state != nullptr)
         {
-            ::warp(world, level, theme);
+            g_state->warp(world, level, theme);
         }
     };
 

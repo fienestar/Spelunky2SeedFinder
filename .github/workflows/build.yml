@@ -43,7 +43,6 @@ jobs:
           move build\bin\Spelunky2SeedFinder.dll Spelunky2SeedFinder\Spelunky2SeedFinder.dll
           move build\bin\Spelunky2SeedFinder.exe Spelunky2SeedFinder\Spelunky2SeedFinder.exe
           move README.md Spelunky2SeedFinder\README.txt
-          move examples Spelunky2SeedFinder\Scripts
           7z a Spelunky2SeedFinder_WHIP.zip Spelunky2SeedFinder\
 
       - name: Create WHIP release
