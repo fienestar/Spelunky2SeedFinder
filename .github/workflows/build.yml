@@ -30,9 +30,6 @@ jobs:
         shell: bash
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-      - name: check sol2
-        run: ls 3rdParty/overlunky/src/sol2
-
       - name: Build
         run: |
           mkdir build

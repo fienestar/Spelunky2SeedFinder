@@ -10,9 +10,16 @@ execute_process(
   OUTPUT_VARIABLE GIT_VERSION
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-add_definitions("-DGIT_VERSION=${GIT_VERSION}")
-add_definitions("-D_ITERATOR_DEBUG_LEVEL=0")
-add_definitions("-DNOMINMAX")
+add_compile_definitions("GIT_VERSION=${GIT_VERSION}")
+add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+add_compile_definitions(NOMINMAX)
+
+# Fix MSVC 19.40 crash with mutex due to spelunky using an old redist (mscvp140.dll)
+# Related links: https://github.com/microsoft/STL/releases/tag/vs-2022-17.10 | https://github.com/actions/runner-images/issues/10004
+add_compile_definitions(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
+
+# Temp fix for the new MSVC tools requiring minimum clang 18, for the time being we're staying on clang 17
+add_compile_definitions(_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH)
 
 set(FMT_MASTER_PROJECT OFF)
 option(BUILD_OVERLUNKY CACHE OFF)
@@ -23,5 +30,5 @@ add_subdirectory(injector)
 add_subdirectory(injected)
 
 if (MSVC)
-  add_definitions(/bigobj)
+  add_compile_options(/bigobj)
 endif()
