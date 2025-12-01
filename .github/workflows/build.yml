@@ -1,0 +1,64 @@
+name: Whip Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: windows-latest
+    steps:
+      - uses: llvm/actions/install-ninja@main
+
+      - name: Install llvm 17
+        run: choco install llvm --version 17.0.6 --allow-downgrade -y
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Remove Strawberry Perl from PATH
+        run: |
+          $env:PATH = $env:PATH -replace "C:\\Strawberry\\c\\bin;", ""
+          "PATH=$env:PATH" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Get tags for release notes
+        shell: bash
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+      - name: check sol2
+        run: ls 3rdParty/overlunky/src/sol2
+
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DBUILD_INFO_DUMP=OFF -DBUILD_SPEL2_DLL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -GNinja
+          cmake --build . --config Release
+
+      - name: Create artifacts
+        run: |
+          mkdir Spelunky2SeedFinder
+          move build\bin\Spelunky2SeedFinder.dll Spelunky2SeedFinder\Spelunky2SeedFinder.dll
+          move build\bin\Spelunky2SeedFinder.exe Spelunky2SeedFinder\Spelunky2SeedFinder.exe
+          move README.md Spelunky2SeedFinder\README.txt
+          move examples Spelunky2SeedFinder\Scripts
+          7z a Spelunky2SeedFinder_WHIP.zip Spelunky2SeedFinder\
+
+      - name: Create WHIP release
+        uses: marvinpinto/action-automatic-releases@v1.2.0
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "whip"
+          prerelease: false
+          title: "WHIP Build"
+          files: |
+            Spelunky2SeedFinder_WHIP.zip
+            Spelunky2SeedFinder/Spelunky2SeedFinder.exe
+            Spelunky2SeedFinder/Spelunky2SeedFinder.dll
